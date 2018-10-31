@@ -71,40 +71,48 @@ namespace SSD_CA1
         }
         private static void GetData(int option)
         {
-            int i = 1;
-            Console.Clear();
-            List<string> arr = new List<string>();
-            Console.WriteLine("Data:");
-            StreamReader sr = new StreamReader("Data.txt");
-            string input = sr.ReadLine();
-            while (input != null && input != "")
+            if (File.Exists("Data.txt"))
             {
-                if (option == 3 || option == 4)
+                int i = 1;
+                Console.Clear();
+                List<string> arr = new List<string>();
+                Console.WriteLine("Data:");
+                StreamReader sr = new StreamReader("Data.txt");
+                string input = sr.ReadLine();
+                while (input != null && input != "")
                 {
-                    arr.Add(input);
+                    if (option == 3 || option == 4)
+                    {
+                        arr.Add(input);
+                    }
+                    Console.WriteLine("{0}. {1}", i, input);
+                    i++;
+                    input = sr.ReadLine();
                 }
-                Console.WriteLine("{0}. {1}",i,input);
-                i++;
-                input = sr.ReadLine();
-            }
-            sr.Close();
-            if (option == 3)
-            {
-                UpdateData(arr);
-            }
-            else if (option == 4)
-            {
-                DeleteData(arr);
+                sr.Close();
+                if (option == 3)
+                {
+                    UpdateData(arr);
+                }
+                else if (option == 4)
+                {
+                    DeleteData(arr);
+                }
+                else
+                {
+                    Console.WriteLine("Press enter to continue");
+                    Console.ReadKey();
+                }
             }
             else
             {
-                Console.WriteLine("Press enter to continue");
+                Console.WriteLine("Try creating data first, press enter to return to the menu");
                 Console.ReadKey();
             }
         }
         private static void DeleteData(List<string> arr)
         {
-            string input="";
+            string input = "";
             int intVal;
             while (input == "")
             {
@@ -144,7 +152,7 @@ namespace SSD_CA1
                     {
                         Console.WriteLine("What would you like to replace it with");
                         string newInput = Console.ReadLine();
-                        arr[intVal - 1]=newInput;
+                        arr[intVal - 1] = newInput;
                         OverwriteFile(arr);
                     }
                     else
@@ -163,12 +171,18 @@ namespace SSD_CA1
         private static void OverwriteFile(List<string> arr)
         {
             File.WriteAllText("Data.txt", "");
-            StreamWriter sw = new StreamWriter("Data.txt", true);
-            foreach (var item in arr)
+            if (arr.Count > 0)
             {
-                sw.WriteLine(item);
+                StreamWriter sw = new StreamWriter("Data.txt", true);
+                foreach (var item in arr)
+                {
+                    sw.WriteLine(item);
+                }
+                sw.Close();
             }
-            sw.Close();
+            else {
+                File.Delete("Data.txt");
+            }
         }
     }
 }
