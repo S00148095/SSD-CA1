@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/s00148095.mp4
+/Software Architecture Document.docx
+/Software Requirements Specification Document.docx
